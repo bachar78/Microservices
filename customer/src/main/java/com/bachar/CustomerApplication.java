@@ -9,7 +9,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * Hello world!
  *
  */
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                "com.bachar.amqp",
+                "com.bachar.customer"
+        }
+)
 @EnableDiscoveryClient
 @EnableFeignClients(
         basePackages = "com.bachar.clients"

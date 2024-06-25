@@ -1,5 +1,6 @@
 package com.bachar.customer;
 
+import com.bachar.amqp.RabbitMQMessageProducer;
 import com.bachar.clients.fraud.FraudCheckResponse;
 import com.bachar.clients.fraud.FraudClient;
 import com.bachar.clients.notification.NotificationClient;
@@ -15,7 +16,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
-    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer producer;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -36,9 +37,11 @@ public class CustomerService {
             throw new IllegalStateException("He is Fraudster");
         }
         //todo: send notification
-        notificationClient.sendNotification(NotificationRequest.builder()
+        NotificationRequest notificationPayload = NotificationRequest.builder()
                 .toCustomerId(newCustomer.getId())
                 .toCustomerEmail(newCustomer.getEmail())
-                .message("Welcome in our Microservices Course").build());
+                .message("Welcome in our Microservices Course").build();
+        //Make notification async. i.e add notification to queue
+        producer.publish(notificationPayload, "internal.exchange", "internal.notification.routing-key");
     }
 }
