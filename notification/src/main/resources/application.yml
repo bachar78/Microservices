@@ -20,13 +20,7 @@ spring:
       exchange: internal.exchange
       default-receive-queue: notification.queue
       routing-key: internal.notification.routing-key
-#rabbitmq:
-#  exchanges:
-#    internal: internal.exchange
-#  queues:
-#    notification: notification.queue
-#  routing-keys:
-#    internal-notification: internal.notification.routing-key
+    addresses: localhost:5672
 eureka:
   client:
     service-url:
