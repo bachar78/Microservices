@@ -3,14 +3,13 @@ package com.bachar.customer;
 import com.bachar.amqp.RabbitMQMessageProducer;
 import com.bachar.clients.fraud.FraudCheckResponse;
 import com.bachar.clients.fraud.FraudClient;
-import com.bachar.clients.notification.NotificationClient;
 import com.bachar.clients.notification.NotificationRequest;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
