@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: customer
+  datasource:
+    password: password
+    url: jdbc:postgresql://postgres-microservices:5432/customer
+    username: bachar
+  jpa:
+    hibernate:
+      ddl-auto: create-drop #if you want to restart the data when the app restart put update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  rabbitmq:
+    addresses: rabbitmq:5672
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin-microservices:9411
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
