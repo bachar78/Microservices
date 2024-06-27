@@ -1,0 +1,41 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: notification
+  datasource:
+    password: password
+    url: jdbc:postgresql://postgres-microservices:5432/notification
+    username: bachar
+  jpa:
+    hibernate:
+      ddl-auto: create-drop #if you want to keep data updated put update instead
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  rabbitmq:
+    template:
+      exchange: internal.exchange
+      default-receive-queue: notification.queue
+      routing-key: internal.notification.routing-key
+    addresses: rabbitmq:5672
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin-microservices:9411
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+
